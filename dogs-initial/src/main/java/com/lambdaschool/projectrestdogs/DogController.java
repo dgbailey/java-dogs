@@ -1,5 +1,6 @@
 package com.lambdaschool.projectrestdogs;
 
+import com.lambdaschool.projectrestdogs.exceptions.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,17 +15,28 @@ import java.util.ArrayList;
 public class DogController
 {
     // localhost:8080/dogs/dogs
-    @GetMapping(value = "/dogs")
+    @GetMapping(value = "/dogs",
+            produces = {"application/json"})
     public ResponseEntity<?> getAllDogs()
     {
         return new ResponseEntity<>(ProjectrestdogsApplication.ourDogList.dogList, HttpStatus.OK);
     }
 
     // localhost:8080/dogs/{id}
-    @GetMapping(value = "/{id}")
+    @GetMapping(value = "/{id}",produces = {"application/json"})
     public ResponseEntity<?> getDogDetail(@PathVariable long id)
     {
-        Dog rtnDog = ProjectrestdogsApplication.ourDogList.findDog(d -> (d.getId() == id));
+        Dog rtnDog;
+
+
+        if ((ProjectrestdogsApplication.ourDogList.findDog(d -> (d.getId() == id)) == null))
+        {
+            throw new ResourceNotFoundException("Employee with id " + id + " not found");
+        } else
+        {
+            rtnDog = ProjectrestdogsApplication.ourDogList.findDog(d -> (d.getId() == id));
+        }
+
         return new ResponseEntity<>(rtnDog, HttpStatus.OK);
     }
 
