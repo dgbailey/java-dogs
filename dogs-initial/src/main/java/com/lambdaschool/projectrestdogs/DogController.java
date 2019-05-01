@@ -7,6 +7,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import com.lambdaschool.projectrestdogs.Services.MessageSender;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 
 import java.util.ArrayList;
 
@@ -14,12 +18,20 @@ import java.util.ArrayList;
 @RequestMapping("/dogs")
 public class DogController
 {
+    private static final Logger logger = LoggerFactory.getLogger(DogController.class);
     // localhost:8080/dogs/dogs
     @GetMapping(value = "/dogs",
             produces = {"application/json"})
+
+
     public ResponseEntity<?> getAllDogs()
     {
+        logger.info("We requested /dogs resource");
+        String endPtMsg = "Hit Dogs endpoint on DATE = TODAY DDMMYYYY";
+
+        MessageSender.SendMessageEndpoint();
         return new ResponseEntity<>(ProjectrestdogsApplication.ourDogList.dogList, HttpStatus.OK);
+
     }
 
     // localhost:8080/dogs/{id}
@@ -27,13 +39,17 @@ public class DogController
     public ResponseEntity<?> getDogDetail(@PathVariable long id)
     {
         Dog rtnDog;
+        logger.info("We requested /dogs/{id}");
 
 
         if ((ProjectrestdogsApplication.ourDogList.findDog(d -> (d.getId() == id)) == null))
         {
+            logger.info("We requested /dogs/{id} threw exception");
             throw new ResourceNotFoundException("Employee with id " + id + " not found");
+
         } else
         {
+            logger.info("We requested /dogs/{id} success");
             rtnDog = ProjectrestdogsApplication.ourDogList.findDog(d -> (d.getId() == id));
         }
 
@@ -44,6 +60,7 @@ public class DogController
     @GetMapping(value = "/breeds/{breed}")
     public ResponseEntity<?> getDogBreeds (@PathVariable String breed)
     {
+        logger.info("We requested /dogs/{breed} success");
         ArrayList<Dog> rtnDogs = ProjectrestdogsApplication.ourDogList.
                 findDogs(d -> d.getBreed().toUpperCase().equals(breed.toUpperCase()));
         return new ResponseEntity<>(rtnDogs, HttpStatus.OK);

@@ -31,6 +31,16 @@ public class Dog
         return id;
     }
 
+    @Override
+    public String toString() {
+        return "Dog{" +
+                "id=" + id +
+                ", breed='" + breed + '\'' +
+                ", weight=" + weight +
+                ", apartmentSuitable=" + apartmentSuitable +
+                '}';
+    }
+
     public String getBreed()
     {
         return breed;
