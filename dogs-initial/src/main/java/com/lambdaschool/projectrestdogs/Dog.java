@@ -1,5 +1,8 @@
 package com.lambdaschool.projectrestdogs;
 
+import com.lambdaschool.projectrestdogs.Services.MessageSender;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import java.util.concurrent.atomic.AtomicLong;
 
 public class Dog
@@ -10,12 +13,14 @@ public class Dog
     private int weight;
     private boolean apartmentSuitable;
 
+
     public Dog(String breed, int weight, boolean apartmentSuitable)
     {
         this.id = counter.incrementAndGet();
         this.breed = breed;
         this.weight = weight;
         this.apartmentSuitable = apartmentSuitable;
+        //send message each time dog created
     }
 
     public Dog(Dog toClone)
@@ -33,6 +38,7 @@ public class Dog
 
     @Override
     public String toString() {
+
         return "Dog{" +
                 "id=" + id +
                 ", breed='" + breed + '\'' +

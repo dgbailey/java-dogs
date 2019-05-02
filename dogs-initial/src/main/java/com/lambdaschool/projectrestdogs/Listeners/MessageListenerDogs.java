@@ -22,4 +22,12 @@ public class MessageListenerDogs {
             logger.info("Received message {}", msg.toString());
         }
 
+        @RabbitListener(queues = ProjectrestdogsApplication.QUEUE_NAME_EP_DOGS)
+        public void receiveDogEndpointMessage(MessageDetail msg)
+        {
+                // process the message
+                logger.info("Received message {}", msg.toString());
+        }
+
+
 }

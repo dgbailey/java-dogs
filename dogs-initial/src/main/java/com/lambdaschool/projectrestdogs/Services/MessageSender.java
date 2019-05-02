@@ -31,7 +31,7 @@ public class MessageSender
 
 
 
-    @Scheduled(fixedDelay = 3000L)
+//    @Scheduled(fixedDelay = 3000L)
     public void SendMessage()
     {
         for (Dog d: ProjectrestdogsApplication.ourDogList.dogList)
@@ -46,7 +46,7 @@ public class MessageSender
         }
     }
 
-    @Scheduled(fixedDelay = 3000L)
+
     public void SendMessageEndpoint(String message)
     {
 
@@ -54,8 +54,8 @@ public class MessageSender
             MessageDetail newMessage = new MessageDetail(message); // send
 
 
-            logger.info("Sending message Endpoint Dog Hit");
-            rt.convertAndSend(ProjectrestdogsApplication.QUEUE_NAME_DOGS, newMessage); // send
+            logger.info("Sending message EndpointHit");
+            rt.convertAndSend(ProjectrestdogsApplication.QUEUE_NAME_EP_DOGS, newMessage); // send
 
 
     }

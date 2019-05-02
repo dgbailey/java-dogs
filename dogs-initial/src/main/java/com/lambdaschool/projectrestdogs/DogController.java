@@ -1,6 +1,9 @@
 package com.lambdaschool.projectrestdogs;
 
 import com.lambdaschool.projectrestdogs.exceptions.ResourceNotFoundException;
+import org.springframework.amqp.core.Message;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,18 +21,26 @@ import java.util.ArrayList;
 @RequestMapping("/dogs")
 public class DogController
 {
+//    @Autowired
+    MessageSender msgSender;
+
+    DogController(MessageSender msgSender)
+    {
+        this.msgSender = msgSender;
+    }
+
+
     private static final Logger logger = LoggerFactory.getLogger(DogController.class);
     // localhost:8080/dogs/dogs
-    @GetMapping(value = "/dogs",
-            produces = {"application/json"})
 
-
+    @GetMapping(value = "/dogs", produces = {"application/json"})
     public ResponseEntity<?> getAllDogs()
     {
         logger.info("We requested /dogs resource");
         String endPtMsg = "Hit Dogs endpoint on DATE = TODAY DDMMYYYY";
 
-        MessageSender.SendMessageEndpoint();
+        this.msgSender.SendMessageEndpoint(endPtMsg);
+
         return new ResponseEntity<>(ProjectrestdogsApplication.ourDogList.dogList, HttpStatus.OK);
 
     }
