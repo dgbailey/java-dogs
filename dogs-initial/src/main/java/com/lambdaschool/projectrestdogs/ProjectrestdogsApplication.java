@@ -35,8 +35,9 @@ public class ProjectrestdogsApplication
     public static void main(String[] args)
     {
 
-        ourDogList = new DogList();
+
         ApplicationContext ctx = SpringApplication.run(ProjectrestdogsApplication.class, args);
+        ourDogList = new DogList();
 
         DispatcherServlet dispatcherServlet = (DispatcherServlet)ctx.getBean("dispatcherServlet");
         dispatcherServlet.setThrowExceptionIfNoHandlerFound(true);

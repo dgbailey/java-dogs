@@ -1,6 +1,7 @@
 package com.lambdaschool.projectrestdogs;
 
 import com.lambdaschool.projectrestdogs.Dog;
+import com.lambdaschool.projectrestdogs.Services.MessageSender;
 
 import java.util.ArrayList;
 
@@ -8,13 +9,15 @@ public class DogList
 {
     public ArrayList<Dog> dogList = new ArrayList<Dog>();
 
+
+
     public DogList()
     {
-        dogList.add(new Dog("Springer", 50, false));
-        dogList.add(new Dog("Bulldog", 50, true));
-        dogList.add(new Dog("Collie", 50, false));
-        dogList.add(new Dog("Boston Terrie", 35, true));
-        dogList.add(new Dog("Corgie", 35, true));
+        dogList.add(Dog.createDog("Springer", 50, false));
+        dogList.add(Dog.createDog("Bulldog", 50, true));
+        dogList.add(Dog.createDog("Collie", 50, false));
+        dogList.add(Dog.createDog("Boston Terrie", 35, true));
+        dogList.add(Dog.createDog("Corgie", 35, true));
     }
 
     public Dog findDog(CheckDog tester)
@@ -28,6 +31,8 @@ public class DogList
         }
         return null;
     }
+
+
 
     public ArrayList<Dog> findDogs(CheckDog tester)
     {

@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.lambdaschool.projectrestdogs.Services.MessageSender;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
 
@@ -22,24 +23,25 @@ import java.util.ArrayList;
 public class DogController
 {
 //    @Autowired
-    MessageSender msgSender;
-
-    DogController(MessageSender msgSender)
-    {
-        this.msgSender = msgSender;
-    }
+    //commenting out injection of message sender for heroku
+//    MessageSender msgSender;
+//
+//    DogController(MessageSender msgSender)
+//    {
+//        this.msgSender = msgSender;
+//    }
 
 
     private static final Logger logger = LoggerFactory.getLogger(DogController.class);
     // localhost:8080/dogs/dogs
 
-    @GetMapping(value = "/dogs", produces = {"application/json"})
+    @GetMapping(value = "/doglist", produces = {"application/json"})
     public ResponseEntity<?> getAllDogs()
     {
         logger.info("We requested /dogs resource");
         String endPtMsg = "Hit Dogs endpoint on DATE = TODAY DDMMYYYY";
 
-        this.msgSender.SendMessageEndpoint(endPtMsg);
+//        this.msgSender.SendMessageEndpoint(endPtMsg);
 
         return new ResponseEntity<>(ProjectrestdogsApplication.ourDogList.dogList, HttpStatus.OK);
 
@@ -75,5 +77,16 @@ public class DogController
         ArrayList<Dog> rtnDogs = ProjectrestdogsApplication.ourDogList.
                 findDogs(d -> d.getBreed().toUpperCase().equals(breed.toUpperCase()));
         return new ResponseEntity<>(rtnDogs, HttpStatus.OK);
+    }
+
+
+    //thymeleaf ties html to hava
+    @GetMapping(value = "/dogtable")
+    public ModelAndView displayDogtable()
+    {
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("dogs");
+        mav.addObject("dogList", ProjectrestdogsApplication.ourDogList.dogList);
+        return mav;
     }
 }
